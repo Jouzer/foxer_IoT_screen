@@ -26,8 +26,8 @@ XPT2046_Touchscreen ts(TS_CS);
 // WLAN
 #include <ESP8266WiFi.h> 
 #include <WiFiClientSecure.h>
-const char* ssid     = "x";         // The SSID (name) of the Wi-Fi network you want to connect to
-const char* password = "y";     // The password of the Wi-Fi network
+const char* ssid     = "secret";         // The SSID (name) of the Wi-Fi network you want to connect to
+const char* password = "secret";     // The password of the Wi-Fi network
 
 // API
 #include <ESP8266HTTPClient.h>
@@ -35,18 +35,19 @@ const char* password = "y";     // The password of the Wi-Fi network
 HTTPClient client;
 
 const int httpsPort = 443;
-const char* host = "https://backend.foxeriot.com/api/v1/get-devices?deviceGroup=(put the name of the group of your devices here, copy it from url)";
-const char* apikey = "paste the long api key here";
+const char* host = "https://backend.foxeriot.com/api/v1/get-devices?deviceGroup=secret";
+const char* apikey = "secretsecretsecretsecretsecretsecretsecretsecretsecretsecretsecret";
 // OMAT
 
 #define TFT_ROTATION 1
 #define MITTAUS_MAARA 9
 
-#define YELLOW_LIMIT 50 // *10
-#define BLUE_LIMIT 20 // *10
+#define YELLOW_LIMIT 220 // *10
+#define BLUE_LIMIT 200 // *10
 
 
 int lampoArray[] = {00,11,22,33,44,55,66,77,88};
+int oldLampoArray[] = {00,11,22,33,44,55,66,77,88};
 
 void printRoomName(int i, int x, int y) {
   tft.setTextSize(2);
@@ -109,8 +110,6 @@ void setup() {
   tft.fillScreen(ILI9341_BLACK);
   tft.setCursor(0,0);
   tft.setTextSize(1);
-  getFoxerGroup();
-
 
   while (!Serial && (millis() <= 1000))
     ;
@@ -140,7 +139,7 @@ void drawValuesAndNames() {
   tft.setTextColor(ILI9341_WHITE);
 
   tft.setTextSize(4);
-  int i, x, y;
+  int i, x, y, peakX, peakY, botLeftX, botLeftY, botRightX, botRightY;
   for (i = 0; i < MITTAUS_MAARA; i++) {
     x = (i % 3) ;
     x = (10 * x) + (100 * x); // border and multiply
@@ -148,11 +147,43 @@ void drawValuesAndNames() {
     y = (10 * y) + (73 * y);
 
     tft.setTextSize(3);
-    tft.setCursor(x+15,y+43);
+    tft.setCursor(x+5,y+43);
     tft.print((float)lampoArray[i]/10, 1);
 
     printRoomName(i,x,y);
+
+    // Print arrow (triangle) (up, down, right) based on old reading
+    if(lampoArray[i] == oldLampoArray[i]) {
+      peakX = x + 95; peakY = y + 43 + 9;
+      botLeftX = x + 77; botLeftY = y + 43;
+      botRightX = x + 77; botRightY = y + 43 + 18;
+    } else if(lampoArray[i] > oldLampoArray[i]) {
+      peakX = x + 77 + 9; peakY = y + 43;
+      botLeftX = x + 77; botLeftY = y + 43 + 18;
+      botRightX = x + 95; botRightY = y + 43 + 18;
+    } else {
+      peakX = x + 77 + 9; peakY = y + 43 + 18;
+      botLeftX = x + 77; botLeftY = y + 43;
+      botRightX = x + 95; botRightY = y + 43;
+    }
+    tft.fillTriangle(peakX, peakY, botLeftX, botLeftY, botRightX, botRightY, ILI9341_WHITE);
+
   } 
+}
+
+
+
+void dealWithJsonDataEntry(const char* deviceId, int value) {
+         if(strcmp(deviceId,  "secret") == 0) { oldLampoArray[0] = lampoArray[0]; lampoArray[0] = value; } // "MK - Huone 1"        
+    else if(strcmp(deviceId,  "secret") == 0) { oldLampoArray[4] = lampoArray[4]; lampoArray[4] = value; } // "MK - Pesuhuone"   
+    else if(strcmp(deviceId,  "secret") == 0) { oldLampoArray[6] = lampoArray[6]; lampoArray[6] = value; } // "MK - Alapohja"   
+    else if(strcmp(deviceId,  "secret") == 0) { oldLampoArray[1] = lampoArray[1]; lampoArray[1] = value; } // "MK - Huone 2"     
+    else if(strcmp(deviceId,  "secret") == 0) { oldLampoArray[2] = lampoArray[2]; lampoArray[2] = value; } // "MK - Huone 3"     
+    else if(strcmp(deviceId,  "secret") == 0) { oldLampoArray[5] = lampoArray[5]; lampoArray[5] = value; } // "MK - Suihku"     
+    else if(strcmp(deviceId,  "secret") == 0) { oldLampoArray[3] = lampoArray[3]; lampoArray[3] = value; } // "MK - Olohuone"     
+    else if(strcmp(deviceId,  "secret") == 0) { oldLampoArray[8] = lampoArray[8]; lampoArray[8] = value; } // "MK - Lämmönjakohuone"     
+    else if(strcmp(deviceId,  "secret") == 0) { oldLampoArray[7] = lampoArray[7]; lampoArray[7] = value; } // "MK - Autotalli"
+    else {Serial.print("Skipping deviceId "); Serial.print(deviceId); Serial.println(" because it's not on the list of approved sensors");}
 }
 
 void getFoxerGroup() {
@@ -176,10 +207,6 @@ void getFoxerGroup() {
   if(response == 200) {
  
  //   Serial.println("### Payload below ###");
-   // String payload = http.getString();
-    // Serial.print(payload);
-    Serial.println("Skipping payload load to memory for limited RAM, but it's there.");
-    
     // Stream& input;
     
     StaticJsonDocument<176> filter;
@@ -201,21 +228,37 @@ void getFoxerGroup() {
     if (error) {
       Serial.print(F("deserializeJson() failed: "));
       Serial.println(error.f_str());
+      tft.fillScreen(ILI9341_RED); // Red = problem in Json parse
+      http.end();
       return;
     }
     
-    int paging_limit = doc["paging"]["limit"]; // Amount of sensors
-
     JsonArray data = doc["data"];
-
-    // Decode JSON/Extract values
-    Serial.println(F("Response:"));
-    Serial.println(doc["data"][0].as<char*>());
-    Serial.println(data[1].as<char*>());
-  }
-  else
+    Serial.print("JSON array size: ");
+    Serial.println(data.size());
+    
+    // Walk the JsonArray efficiently
+    for (JsonObject obj : data) {
+      JsonArray latestObs = obj["latestObservations"];
+      for (JsonObject observation : latestObs) {
+        if(observation["variable"] == "temperature" ) {
+          const char* devId = obj["deviceId"];
+          float value = observation["value"];
+          dealWithJsonDataEntry(devId, round(value * 10));
+        } else { 
+          Serial.print("Skipping observation ");
+          Serial.print(String(observation["variable"]));
+          Serial.print(" for deviceId ");
+          Serial.println(String(obj["deviceId"])); 
+        }
+      }
+    }
+    tft.fillScreen(ILI9341_BLACK); // Black = everything okay
+    
+  } else
   {
     Serial.println("Error in response");
+    tft.fillScreen(ILI9341_YELLOW); // Yellow background = problem in connection
   }
     
   delay(5000);
@@ -225,8 +268,8 @@ void getFoxerGroup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  //  tft.fillScreen(ILI9341_BLACK); << ei tarvi koska piirtää kuitenkin rectit päälle
+    getFoxerGroup();
     drawRects();
     drawValuesAndNames();
-    delay(2000);
+    delay(900000);
 }
