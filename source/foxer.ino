@@ -36,7 +36,7 @@ HTTPClient client;
 
 const int httpsPort = 443;
 const char* host = "https://backend.foxeriot.com/api/v1/get-devices?deviceGroup=(put the name of the group of your devices here, copy it from url)";
-const char* apikey = "paste the long api key here"
+const char* apikey = "paste the long api key here";
 // OMAT
 
 #define TFT_ROTATION 1
