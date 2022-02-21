@@ -31,7 +31,7 @@ const char* password = "y";     // The password of the Wi-Fi network
 
 // API
 #include <ESP8266HTTPClient.h>
-#include <ArduinoJson.h> <-- pitää ettii tää jstn
+#include <ArduinoJson.h>
 HTTPClient client;
 
 const int httpsPort = 443;
