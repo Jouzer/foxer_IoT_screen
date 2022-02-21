@@ -29,6 +29,8 @@ O 3D design and print box / cover for a commercial box (Schneider Exact most lik
 
 ? Maybe fix insecure https connection -- I can't imagine any scenario where this could be a problem in my project but it is a bad feature. Problem is the alternatives seemed pretty hacky too.
 
+? Translate the variable names and comments from Finnish to English
+
 It would be nice if the Wifi SSID/pw, API key and such could be able to configurate through the screen, but as I'm already running against memory issues and also for finding doing that of little interest (to me), I probably won't be doing that. Branching very welcome!
 
 Progress right now:
