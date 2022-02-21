@@ -1,7 +1,7 @@
 # foxer_IoT_screen
 ESP8266 / Arduino / Wemos TFT 2.4 >> Load up to 9 temperature sensors from Foxer API and display them on TFT
 
-Hardware requirements: (without adapting the code)
+Requirements: (without adapting the code)
 - Wemos D1 Mini Pro
 - Wemos TFT 2.4 touch shield
 - Foxer IoT sensors and account that can create a group of sensors and release the API key
@@ -26,6 +26,8 @@ O 3D design and print box / cover for a commercial box (Schneider Exact most lik
 ? Show failure icons (disconnect from internet, failed to connect server, temperature sensor not refreshing)
 
 ? Second view after touching any of the sensor --> Show CO2 and humidity, draw a trend chart from last 24h
+
+? Maybe fix insecure https connection -- I can't imagine any scenario where this could be a problem in my project but it is a bad feature. Problem is the alternatives seemed pretty hacky too.
 
 It would be nice if the Wifi SSID/pw, API key and such could be able to configurate through the screen, but as I'm already running against memory issues and also for finding doing that of little interest (to me), I probably won't be doing that. Branching very welcome!
 
