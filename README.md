@@ -30,4 +30,5 @@ O 3D design and print box / cover for a commercial box (Schneider Exact most lik
 It would be nice if the Wifi SSID/pw, API key and such could be able to configurate through the screen, but as I'm already running against memory issues and also for finding doing that of little interest (to me), I probably won't be doing that. Branching very welcome!
 
 Progress right now:
+<img src="https://user-images.githubusercontent.com/32982491/154942843-f07caf5f-347d-4796-a2e8-3503d0c5f742.JPEG" width=50% height=50%>
 ![Progress_2_2022](https://user-images.githubusercontent.com/32982491/154942843-f07caf5f-347d-4796-a2e8-3503d0c5f742.JPEG)
