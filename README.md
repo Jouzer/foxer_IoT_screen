@@ -31,6 +31,8 @@ X/Kinda Show failure icons (disconnect from internet, failed to connect server, 
 
 ? Translate the variable names and comments from Finnish to English
 
+? Compare the timestamps in some way to see if the received value is old or new and do something with that information
+
 It would be nice if the Wifi SSID/pw, API key and such could be able to configurate through the screen, but as I'm already running against memory issues and also for finding doing that of little interest (to me), I probably won't be doing that. Branching very welcome!
 
 Progress images:
