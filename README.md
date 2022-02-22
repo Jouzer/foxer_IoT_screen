@@ -8,6 +8,11 @@ Requirements: (without adapting the code)
 
 I had some amount of these sensors installed in my house and all the other members of my family never went online to see the readings. I thought it was a waste, because as a home owner I'm trying to keep the costs down and this temperature data is actually useful when we decide to start or stop the heaters.
 
+Known bugs / issues
+-------------------
+
+- Sometimes (or almost every other time) the http.getString() seems to return empty or incomplete data and JSON parse fails. Considering a work around.
+
 Plan / done (O = not done, X = done, ? = idea)
 ----------------------------------------------
 
@@ -24,6 +29,8 @@ X Parse JSON data and write on the screen, in the correct boxes
 O 3D design and print box / cover for a commercial box (Schneider Exact most likely)
 
 X/Kinda Show failure icons (disconnect from internet, failed to connect server, temperature sensor not refreshing)
+
+O Add screen sleep mode and wake on touch
 
 ? Second view after touching any of the sensor --> Show CO2 and humidity, draw a trend chart from last 24h
 
