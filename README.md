@@ -53,6 +53,7 @@ After connection done and added triangles + background color showing state (aler
 <img src="https://user-images.githubusercontent.com/32982491/155036398-5cdb9df4-e846-4c3b-8d55-a7ba1db2dfdb.JPEG" width=50% height=50%>
 
 3d designed a faceplate for Schneider Exact junction box, in which I can install the Wemos d1 mini pro + tft 2.4 shield, haven't printed yet
+
 ![jbCover](https://user-images.githubusercontent.com/32982491/155220582-926cccac-ec1b-4171-a543-f148234fcb16.jpeg)
 
 
