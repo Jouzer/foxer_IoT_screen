@@ -63,7 +63,7 @@ Printed the cover, WARNING several dimensions were wrong, I was able to make it 
 * The junction box was needleslly high, I would purchase a more shallow one next time for better looks
 * The USB plug wouldn't fit, you're going to need a 90 degree plug or do it like me, mangle the connector with pliers and side cutters carefully so that what remains is the metal connector and wires. Careful to not let the bare wires touch each other!
 * The cover would look a lot better with rounded corners and recessed screw hole on top
-* The screen has maybe 3mm of stuff in the side that is not the actualy screen, I painted it with black marker so it looks "ok" but if I redid this I would print a 0.5mm-1mm cover in front of that area of the screen, as there is that amount of space there now where it's sitting
+* The screen has maybe 3mm of stuff in the side that is not the actualy screen, I painted it with black marker so it looks "ok" but if I redid this I would print a 0.5mm-1mm thick cover in front of that area of the screen, perhaps whole area to hide the silver border too, as there is that amount of space there now where it's sitting (screen is not flush with the face but recessed maybe 1mm)
 
 But overall towards the end I started to feel that this project will now either get done or get forgotten in the drawer. It works for me now and I'm pretty happy with it.
 
