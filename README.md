@@ -6,6 +6,8 @@ Requirements: (without adapting the code)
 - Wemos TFT 2.4 touch shield
 - Foxer IoT sensors and account that can create a group of sensors and release the API key
 - Schneider Exact junction box if using my 3d model (please note it needs modifications before using)
+- Very short screws for attaching screen to faceplate
+- Long screws that attach the plate to junctionbox usually come with the junctionbox
 
 I had some amount of these sensors installed in my house and all the other members of my family never went online to see the readings. I thought it was a waste, because as a home owner I'm trying to keep the costs down and this temperature data is actually useful when we decide to start or stop the heaters.
 
