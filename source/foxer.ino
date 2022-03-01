@@ -1,7 +1,8 @@
 /***************************************************
 Miikka Kosonen
 
-Hakee FoxerIOT API rajapinnasta huonearvot ja piirtää ne TFT-näytölle yms.
+Get temperature from Foxer IOT API and print them on screen
+www.foxeriot.com
 
 ****************************************************/
 
@@ -36,15 +37,18 @@ HTTPClient client;
 
 const int httpsPort = 443;
 const char* host = "https://backend.foxeriot.com/api/v1/get-devices?deviceGroup=secret";
-const char* apikey = "secretsecretsecretsecretsecretsecretsecretsecretsecretsecretsecret";
-// OMAT
+const char* apikey = "secretsecretsecretsecret";
 
+// OWN DEFINES
 #define TFT_ROTATION 1
 #define MITTAUS_MAARA 9
 
 #define YELLOW_LIMIT 220 // *10
 #define BLUE_LIMIT 200 // *10
 
+#define MAX_RETRIES_FOXER 6
+#define UPDATE_INTERVAL_MINUTES 30
+#define SLEEP_MINUTES 5
 
 int lampoArray[] = {00,11,22,33,44,55,66,77,88};
 int oldLampoArray[] = {00,11,22,33,44,55,66,77,88};
@@ -80,6 +84,8 @@ void printRoomName(int i, int x, int y) {
 
 void setup() {
   Serial.begin(115200);
+  pinMode(LED_BUILTIN, OUTPUT);
+
   ts.begin();
   ts.setRotation(TFT_ROTATION);
 
@@ -89,7 +95,7 @@ void setup() {
   tft.setTextColor(ILI9341_WHITE);
   tft.setCursor(30,60);
   tft.setTextSize(4);
-  tft.println("Ladataan...");
+  tft.println("Loading...");
   
   tft.setTextSize(2);
   WiFi.begin(ssid, password);             // Connect to the network
@@ -174,25 +180,30 @@ void drawValuesAndNames() {
 
 
 void dealWithJsonDataEntry(const char* deviceId, int value) {
-         if(strcmp(deviceId,  "secret") == 0) { oldLampoArray[0] = lampoArray[0]; lampoArray[0] = value; } // "MK - Huone 1"        
-    else if(strcmp(deviceId,  "secret") == 0) { oldLampoArray[4] = lampoArray[4]; lampoArray[4] = value; } // "MK - Pesuhuone"   
-    else if(strcmp(deviceId,  "secret") == 0) { oldLampoArray[6] = lampoArray[6]; lampoArray[6] = value; } // "MK - Alapohja"   
-    else if(strcmp(deviceId,  "secret") == 0) { oldLampoArray[1] = lampoArray[1]; lampoArray[1] = value; } // "MK - Huone 2"     
-    else if(strcmp(deviceId,  "secret") == 0) { oldLampoArray[2] = lampoArray[2]; lampoArray[2] = value; } // "MK - Huone 3"     
-    else if(strcmp(deviceId,  "secret") == 0) { oldLampoArray[5] = lampoArray[5]; lampoArray[5] = value; } // "MK - Suihku"     
-    else if(strcmp(deviceId,  "secret") == 0) { oldLampoArray[3] = lampoArray[3]; lampoArray[3] = value; } // "MK - Olohuone"     
-    else if(strcmp(deviceId,  "secret") == 0) { oldLampoArray[8] = lampoArray[8]; lampoArray[8] = value; } // "MK - Lämmönjakohuone"     
-    else if(strcmp(deviceId,  "secret") == 0) { oldLampoArray[7] = lampoArray[7]; lampoArray[7] = value; } // "MK - Autotalli"
+         if(strcmp(deviceId,  "53CRE700") == 0) { oldLampoArray[0] = lampoArray[0]; lampoArray[0] = value; } // "MK - Huone 1"        
+    else if(strcmp(deviceId,  "53CRE700") == 0) { oldLampoArray[4] = lampoArray[4]; lampoArray[4] = value; } // "MK - Pesuhuone"   
+    else if(strcmp(deviceId,  "53CRE700") == 0) { oldLampoArray[6] = lampoArray[6]; lampoArray[6] = value; } // "MK - Alapohja"   
+    else if(strcmp(deviceId,  "53CRE700") == 0) { oldLampoArray[1] = lampoArray[1]; lampoArray[1] = value; } // "MK - Huone 2"     
+    else if(strcmp(deviceId,  "53CRE700") == 0) { oldLampoArray[2] = lampoArray[2]; lampoArray[2] = value; } // "MK - Huone 3"     
+    else if(strcmp(deviceId,  "53CRE700") == 0) { oldLampoArray[5] = lampoArray[5]; lampoArray[5] = value; } // "MK - Suihku"     
+    else if(strcmp(deviceId,  "53CRE700") == 0) { oldLampoArray[3] = lampoArray[3]; lampoArray[3] = value; } // "MK - Olohuone"     
+    else if(strcmp(deviceId,  "53CRE700") == 0) { oldLampoArray[8] = lampoArray[8]; lampoArray[8] = value; } // "MK - Lämmönjakohuone"     
+    else if(strcmp(deviceId,  "53CRE700") == 0) { oldLampoArray[7] = lampoArray[7]; lampoArray[7] = value; } // "MK - Autotalli"
     else {Serial.print("Skipping deviceId "); Serial.print(deviceId); Serial.println(" because it's not on the list of approved sensors");}
 }
 
-void getFoxerGroup() {
+void getFoxerGroup(int retryNo) {
+  if(retryNo > MAX_RETRIES_FOXER) {
+    tft.fillScreen(ILI9341_RED); // Red = problem in Json parse
+    return;
+  }
+  
   WiFiClientSecure client;
   HTTPClient http;
   client.setInsecure(); //the magic line, use with caution
   client.connect(host, httpsPort);
   
-  Serial.print("Connectiong to ");
+  Serial.print("Connecting to ");
   Serial.println(host);
   
   http.begin(client, host);
@@ -205,8 +216,6 @@ void getFoxerGroup() {
   Serial.println(" (200 = OK)");
   
   if(response == 200) {
- 
- //   Serial.println("### Payload below ###");
     // Stream& input;
     
     StaticJsonDocument<176> filter;
@@ -228,8 +237,9 @@ void getFoxerGroup() {
     if (error) {
       Serial.print(F("deserializeJson() failed: "));
       Serial.println(error.f_str());
-      tft.fillScreen(ILI9341_RED); // Red = problem in Json parse
       http.end();
+      delay(10000);
+      getFoxerGroup(retryNo);
       return;
     }
     
@@ -257,19 +267,44 @@ void getFoxerGroup() {
     
   } else
   {
-    Serial.println("Error in response");
+    Serial.println("Error in HTTP response");
     tft.fillScreen(ILI9341_YELLOW); // Yellow background = problem in connection
   }
     
-  delay(5000);
   Serial.println("Closing HTTP connection...");
   http.end();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-    getFoxerGroup();
+  static int minutesLeft = 0;
+  static int minutesSinceTouched = 0;
+  static unsigned long resultLastCycle = 0;
+  unsigned long resultNow = millis() % 60000;
+
+  if(resultNow < resultLastCycle) { minutesLeft--; minutesSinceTouched++; }
+  resultLastCycle = resultNow;
+
+  if(minutesLeft < 1) {
+    getFoxerGroup(0);
     drawRects();
     drawValuesAndNames();
-    delay(900000);
+    minutesLeft = UPDATE_INTERVAL_MINUTES;    
+  }
+
+  if(minutesSinceTouched == SLEEP_MINUTES) {
+    minutesSinceTouched++;
+    //  ESP.deepSleep(0); << doesnt sleep the screen either so not very useful for this project 
+    // tft sleep test, didn't work for my tft tft.writeCommand(0x10); delay(5);
+  }
+  
+  if (ts.touched()) {
+      digitalWrite(LED_BUILTIN, LOW);   // turn the LED on (HIGH is the voltage level)
+      delay(1000);
+      digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
+      minutesSinceTouched = 0;
+    // tft sleep test, didn't work for my tft tft.writeCommand(0x11); delay(120);
+  }
+  
+  delay(10000); // if I'm gonna actually do something with ts.touched() I think this needs to go but since it's now on reserve I'll put this back on, I imagine it's easier for the CPU and such  
 }
