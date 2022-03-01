@@ -5,42 +5,31 @@ Requirements: (without adapting the code)
 - Wemos D1 Mini Pro
 - Wemos TFT 2.4 touch shield
 - Foxer IoT sensors and account that can create a group of sensors and release the API key
+- Schneider Exact junction box if using my 3d model (please note it needs modifications before using)
 
 I had some amount of these sensors installed in my house and all the other members of my family never went online to see the readings. I thought it was a waste, because as a home owner I'm trying to keep the costs down and this temperature data is actually useful when we decide to start or stop the heaters.
 
 Known bugs / issues
 -------------------
-
 - Sometimes (or almost every other time) the http.getString() seems to return empty or incomplete data and JSON parse fails. Considering a work around.
+FIXED: I just made a simple retry 10 times before failure and haven't seen any problems in use since
 
 Plan / done (O = not done, X = done, ? = idea)
 ----------------------------------------------
 
-X Draw 3 x 3 grid of boxes that change color depending on temperature
-
-X Show some naming inside those boxes
-
-X Connect to WiFi
-
-X Get JSON data from Foxer IoT server
-
-X Parse JSON data and write on the screen, in the correct boxes
-
-O 3D design and print box / cover for a commercial box (Schneider Exact most likely)
-
-X/Kinda Show failure icons (disconnect from internet, failed to connect server, temperature sensor not refreshing)
-
-O Add screen sleep mode and wake on touch
-
-? Second view after touching any of the sensor --> Show CO2 and humidity, draw a trend chart from last 24h
-
-? Maybe fix insecure https connection -- I can't imagine any scenario where this could be a problem in my project but it is a bad feature. Problem is the alternatives seemed pretty hacky too.
-
-? Translate the variable names and comments from Finnish to English
-
-? Compare the timestamps in some way to see if the received value is old or new and do something with that information
-
-It would be nice if the Wifi SSID/pw, API key and such could be able to configurate through the screen, but as I'm already running against memory issues and also for finding doing that of little interest (to me), I probably won't be doing that. Branching very welcome!
+✔️ Draw 3 x 3 grid of boxes that change color depending on temperature
+✔️ Show some naming inside those boxes
+✔️ Connect to WiFi
+✔️ Get JSON data from Foxer IoT server
+✔️ Parse JSON data and write on the screen, in the correct boxes
+✔️ 3D design and print box / cover for a commercial box (Schneider Exact most likely)
+✔️ Show failure  (disconnect from internet, failed to connect server, temperature sensor not refreshing) >> did with different BG colors
+❌ Add screen sleep mode and wake on touch (tried, would need to change connections so some pin can output screen led on/off, also probably need MOSFET or similar)
+⌛ Second view after touching any of the sensor --> Show CO2 and humidity, draw a trend chart from last 24h
+⌛ Maybe fix insecure https connection -- I can't imagine any scenario where this could be a problem in my project but it is a bad feature. Problem is the alternatives seemed pretty hacky too.
+⌛ Translate the variable names and comments from Finnish to English
+⌛ Compare the timestamps in some way to see if the received value is old or new and do something with that information
+⌛ It would be nice if the Wifi SSID/pw, API key and such could be able to configurate through the screen, but as I'm already running against memory issues and also for finding doing that of little interest (to me), I probably won't be doing that. Branching very welcome!
 
 Progress images:
 
