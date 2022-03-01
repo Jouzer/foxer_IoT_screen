@@ -56,4 +56,16 @@ After connection done and added triangles + background color showing state (aler
 
 ![jbCover](https://user-images.githubusercontent.com/32982491/155220582-926cccac-ec1b-4171-a543-f148234fcb16.jpeg)
 
+Printed the cover, WARNING several dimensions were wrong, I was able to make it work with a file and drill but this model needs adjustments before reuse
+* Cut out top-bottom was not big enough and for that reason, the screw places were off too
+* The screw places for the screen should be 1mm closer in distance, and the base cylinder should be "filed" in 3d editor from the side that protrudes towards the cutout after that adjustment
+* The screw holes were all too small, but the small hole was perfect for aligning the hole with a drill so I probably will not fix this as now it can be made work with whatever screws one has at hand
+* The junction box was needleslly high, I would purchase a more shallow one next time for better looks
+* The USB plug wouldn't fit, you're going to need a 90 degree plug or do it like me, mangle the connector with pliers and side cutters carefully so that what remains is the metal connector and wires. Careful to not let the bare wires touch each other!
+* The cover would look a lot better with rounded corners and recessed screw hole on top
+* The screen has maybe 3mm of stuff in the side that is not the actualy screen, I painted it with black marker so it looks "ok" but if I redid this I would print a 0.5mm-1mm cover in front of that area of the screen, as there is that amount of space there now where it's sitting
+
+But overall towards the end I started to feel that this project will now either get done or get forgotten in the drawer. It works for me now and I'm pretty happy with it.
+
+<img src="https://user-images.githubusercontent.com/32982491/156164213-7b3a7bae-20bd-42da-9ef6-b2c91a3df9fd.JPEG" width=50% height=50%>
 
