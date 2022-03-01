@@ -5,7 +5,7 @@ Requirements: (without adapting the code)
 - Wemos D1 Mini Pro
 - Wemos TFT 2.4 touch shield
 - Foxer IoT sensors and account that can create a group of sensors and release the API key
-- Schneider Exact junction box if using my 3d model (please note it needs modifications before using)
+- Schneider Exact junction box if using my 3d model (NOTE! It needs modifications before using, read notes at bottom)
 - Very short screws for attaching screen to faceplate, ~5mm
 - Long screws that attach the plate to junctionbox usually come with the junctionbox
 
