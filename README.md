@@ -58,7 +58,7 @@ After connection done and added triangles + background color showing state (aler
 
 Printed the cover, WARNING several dimensions were wrong, I was able to make it work with a file and drill but this model needs adjustments before reuse
 * Cut out top-bottom was not big enough and for that reason, the screw places were off too
-* The screw places for the screen should be 1mm closer in distance, and the base cylinder should be "filed" in 3d editor from the side that protrudes towards the cutout after that adjustment
+* The screw places for the screen should be 1mm closer in distance to each other, and the base cylinder should be "filed" in 3d editor from the side that protrudes towards the cutout after that adjustment
 * The screw holes were all too small, but the small hole was perfect for aligning the hole with a drill so I probably will not fix this as now it can be made work with whatever screws one has at hand
 * The junction box was needleslly high, I would purchase a more shallow one next time for better looks
 * The USB plug wouldn't fit, you're going to need a 90 degree plug or do it like me, mangle the connector with pliers and side cutters carefully so that what remains is the metal connector and wires. Careful to not let the bare wires touch each other!
